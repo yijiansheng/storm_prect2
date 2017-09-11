@@ -1,4 +1,4 @@
-package com.stormthread.future;
+package com.stormthread.futuretask;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;

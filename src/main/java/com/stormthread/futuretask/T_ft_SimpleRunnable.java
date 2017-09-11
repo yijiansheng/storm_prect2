@@ -1,4 +1,4 @@
-package com.stormthread.future;
+package com.stormthread.futuretask;
 
 /**
  * Author: changdalin
