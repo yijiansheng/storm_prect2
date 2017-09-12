@@ -1,4 +1,4 @@
-package com.stormstruc;
+package com.stormthreadbase;
 
 /**
  * Author: changdalin
