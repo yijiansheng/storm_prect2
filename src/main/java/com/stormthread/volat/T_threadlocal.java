@@ -7,7 +7,7 @@ package com.stormthread.volat;
  **/
 public class T_threadlocal implements Runnable {
 
-    private ThreadLocal<Double> initValue = new ThreadLocal<Double>() {
+    private static ThreadLocal<Double> initValue = new ThreadLocal<Double>() {
         @Override
         protected Double initialValue() {
             return Math.random() * 100;
