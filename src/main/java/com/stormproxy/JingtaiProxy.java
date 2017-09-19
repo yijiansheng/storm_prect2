@@ -11,7 +11,7 @@ public class JingtaiProxy {
         RealSubject subject = new RealSubject();
         //代理的，代理的塞进了real
         //原因是代理也实现了interface接口
-        Proxy p = new Proxy(subject);
+        JTProxy p = new JTProxy(subject);
         p.request();
     }
 }
@@ -25,10 +25,10 @@ class RealSubject implements Subject {
     }
 }
 
-class Proxy implements Subject {
+class JTProxy implements Subject {
     private Subject subject;
 
-    public Proxy(Subject subject){
+    public JTProxy(Subject subject){
         this.subject = subject;
     }
     public void request(){
