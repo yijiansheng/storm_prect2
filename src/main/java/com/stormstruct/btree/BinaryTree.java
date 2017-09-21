@@ -1,5 +1,7 @@
 package com.stormstruct.btree;
 
+import java.util.ArrayList;
+
 /**
  * Author: changdalin
  * Date: 2017/9/20
@@ -104,6 +106,7 @@ class TwoTree {
             return 0;
         }
         int num = 1;
+        System.out.println(node.val);
         int leftNum = getNodeNum(node.left);
         int rightNum = getNodeNum(node.right);
         num = num + leftNum + rightNum;
@@ -165,7 +168,7 @@ class TwoTree {
 
     /**
      * date:2017/9/20
-     * description:最大深度2 一样，node.left==null 就返回1
+     * description:max_height2 一样，node.left==null 就返回1
      */
     public int getMaxHeight2(TwoNode node) {
         if (node == null) {
@@ -174,15 +177,22 @@ class TwoTree {
         if (node.left == null && node.right == null) {
             return 1;
         }
+        System.out.println(node.val);
         int leftHeight = getMaxHeight2(node.left);
+        System.out.println(node.left == null ? null : node.left.val + "  " + leftHeight);
         int rightHeight = getMaxHeight2(node.right);
+        System.out.println(node.right == null ? null : node.right.val + "  " + rightHeight);
         return Math.max(leftHeight, rightHeight) + 1;
     }
 
 
     /**
      * date:2017/9/20
-     * description:最小深度
+     * description:最小height
+     * 所以直接看倒数后面两级
+     * 最重要的是，底下的不递归完，最上面的无法向下执行，只有底下的都递归完了，返回了，上面的才能继续执行
+     * 最后返回的，也就是最后执行的，root的逻辑，下面一层层的闭合上来
+     * 其实最后的结果，是root第一次递归的结果，下面往上闭合
      */
     public int getMinHeight(TwoNode node) {
         if (node == null) {
@@ -191,8 +201,11 @@ class TwoTree {
         if (node.left == null && node.right == null) {
             return 1;
         }
+        System.out.println(node.val);
         int leftHeight = getMinHeight(node.left);
+        System.out.println(node.left == null ? null : node.left.val + "  " + leftHeight);
         int rightHeight = getMinHeight(node.right);
+        System.out.println(node.right == null ? null : node.right.val + "  " + rightHeight);
         return Math.min(leftHeight, rightHeight) + 1;
     }
 
@@ -242,12 +255,94 @@ class TwoTree {
         if (node == null) {
             return null;
         }
-        inverse(node.left);
-        inverse(node.right);
-        TwoNode tmp = node.right;
-        node.right = node.left;
-        node.left = tmp;
+        //先处理子树
+        //再处理总树
+        TwoNode leftTree = inverse(node.left);
+        TwoNode rightTree = inverse(node.right);
+        node.right = leftTree;
+        node.left = rightTree;
         return node;
+    }
+
+
+    /**
+     * date:2017/9/21
+     * description:node是否在tree中
+     */
+    public boolean isInTree(TwoNode tree, TwoNode node) {
+        if (tree == null || node == null) {
+            return false;
+        }
+        if (tree == node) {
+            return true;
+        }
+        boolean leftIn = isInTree(tree.left, node);
+        boolean rightIn = isInTree(tree.right, node);
+        return leftIn || rightIn;
+    }
+
+
+    /**
+     * date:2017/9/21
+     * description:最低公共节点
+     * 假设t1 t2 都在root里面
+     * 这个是从上向下递归的
+     */
+    public TwoNode getMinNode(TwoNode root, TwoNode t1, TwoNode t2) {
+        //如果t1在root左面,t2在root右面,则root是
+        if (isInTree(root.left, t1)) {
+            if (isInTree(root.right, t2)) {
+                return root;
+            }
+            //不在root的右面
+            else {
+                return getMinNode(root.left, t1, t2);
+            }
+        } else {
+            //t1在root的右子树
+            if (isInTree(root.left, t2)) {
+                return root;
+            } else {
+                return getMinNode(root.right, t1, t2);
+            }
+        }
+    }
+
+
+    /**
+     * date:2017/9/21
+     * description:tree里面是否有这个值
+     */
+    public boolean isHaveVal(TwoNode root, String value) {
+        if (root == null) {
+            return false;
+        }
+        if (root.val.equals(value)) {
+            return true;
+        }
+        boolean leftHave = isHaveVal(root.left, value);
+        boolean rightHave = isHaveVal(root.right, value);
+        return leftHave || rightHave;
+    }
+
+
+    ArrayList<Integer> dis = new ArrayList<Integer>();
+
+    /**
+     * date:2017/9/21
+     * description:树中最长node距离
+     * 这个必须借助一个辅助
+     * 其实每一个node，都有一个这样的属性，求出左数的高度，求出右树的高度
+     */
+    public void maxDis(TwoNode root) {
+        if (root == null) {
+            return;
+        }
+        int leftHeight = getMaxHeight(root.left);
+        int rightHeight = getMaxHeight(root.right);
+        dis.add(leftHeight + rightHeight);
+        maxDis(root.left);
+        maxDis(root.right);
     }
 
 
@@ -266,6 +361,12 @@ public class BinaryTree {
         //System.out.println(btree.getMaxHeight2(root));
         //System.out.println(btree.getMinHeight(root));
         //System.out.println(btree.isBalanced(root));
-        btree.frontPrint(btree.inverse(root));
+        //btree.frontPrint(btree.inverse(root));
+        //System.out.println(btree.isInTree(root.left, root.left.right));
+        //System.out.println(btree.getMinNode(root, root.left.left, root.left.right).val);
+        //System.out.println(btree.isHaveVal(root, "O"));
+        //btree.maxDis(root);
+        //System.out.println(btree.dis);
+
     }
 }
