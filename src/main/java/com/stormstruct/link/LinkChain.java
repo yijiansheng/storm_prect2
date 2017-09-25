@@ -17,13 +17,21 @@ class LNode {
 
 
 class LinkList {
+    LNode l1;
+    LNode l2;
+    LNode l3;
+    LNode l4;
+    LNode l5;
+    LNode l6;
+    LNode l7;
+
     public LNode init() {
-        LNode l1 = new LNode(3);
-        LNode l2 = new LNode(1);
-        LNode l3 = new LNode(5);
-        LNode l4 = new LNode(2);
-        LNode l5 = new LNode(20);
-        LNode l6 = new LNode(11);
+        l1 = new LNode(3);
+        l2 = new LNode(1);
+        l3 = new LNode(5);
+        l4 = new LNode(2);
+        l5 = new LNode(20);
+        l6 = new LNode(11);
         l1.next = l2;
         l2.next = l3;
         l3.next = l4;
@@ -33,15 +41,22 @@ class LinkList {
         return l1;
     }
 
+    public LNode initSecond() {
+        l7 = new LNode(21);
+        l7.next = l4;
+        return l7;
+    }
+
     /**
      * date:2017/9/22
      * description: 打印
      */
     public void printLink(LNode head) {
         while (head != null) {
-            System.out.println(head.val);
+            System.out.print(head.val + "\t");
             head = head.next;
         }
+        System.out.println();
     }
 
 
@@ -100,6 +115,63 @@ class LinkList {
     }
 
     /**
+     * date:2017/9/25
+     * description:因为无法方便地访问下标
+     */
+    public LNode qiefen(LNode begin, LNode end) {
+        if (begin == null || begin == end) {
+            return begin;
+        }
+        //拿最前面这个值
+        int standard = begin.val;
+        LNode middle = begin;
+        LNode cur = begin.next;
+        //cur走一遍
+        while (cur != end) {
+            //后面的数，比standard小，要交换
+            if (cur.val < standard) {
+                middle = middle.next;
+
+                int tmp = cur.val;
+                cur.val = middle.val;
+                middle.val = tmp;
+            }
+            cur = cur.next;
+        }
+        //将middle的值设置成为standard
+        begin.val = middle.val;
+        middle.val = standard;
+
+        return middle;
+    }
+
+
+    public LNode findMiddleNode(LNode begin, LNode end) {
+        if (begin == null || begin == end) {
+            return begin;
+        }
+        LNode middle = begin;
+        LNode cur = begin.next;
+        int standard = begin.val;
+        while (cur != end) {
+            //如果cur向前的过程中，小于standard
+            //standard代表的那个值是begin
+            //前面的node，值都比value大，就把这个值往前放，与middle的值交换
+            //这样，小于standard的值都跑到前面了,middle以及middle之前，都是小的
+            if (cur.val < standard) {
+                middle = middle.next;
+                int temp = cur.val;
+                cur.val = middle.val;
+                middle.val = temp;
+            }
+            cur = cur.next;
+        }
+        begin.val = middle.val;
+        middle.val = standard;
+        return middle;
+    }
+
+    /**
      * date:2017/9/22
      * description:sort
      */
@@ -107,41 +179,15 @@ class LinkList {
         if (begin == end || begin == null) {
             return;
         }
-        LNode index = qiefen(begin, end);
-        quickSort(begin, index);
-        quickSort(index.next, end);
+        LNode middleNode = findMiddleNode(begin, end);
+        quickSort(begin, middleNode);
+        quickSort(middleNode.next, end);
     }
 
-
-    public LNode qiefen(LNode begin, LNode end) {
-        if (begin == null || begin == end) {
-            return begin;
-        }
-        //拿最前面这个值
-        int val = begin.val;
-        LNode index = begin;
-        //从下一个数开始,走一遍
-        LNode cur = begin.next;
-        while (cur != end) {
-            //如果后面的值，小于标杆值
-            // index  cur
-            // 3       1     5    2
-            if (cur.val < val) {
-                //index后移一位
-                index = index.next;
-
-                int tmp = cur.val;
-                cur.val = index.val;
-                index.val = tmp;
-            }
-            cur = cur.next;
-        }
-        begin.val = index.val;
-        index.val = val;
-
-        return index;
-    }
-
+    /**
+     * date:2017/9/25
+     * description:找到最后一个节点
+     */
     public LNode getEndNode(LNode head) {
         while (head.next != null) {
             head = head.next;
@@ -149,6 +195,75 @@ class LinkList {
         return head;
     }
 
+
+    /**
+     * date:2017/9/25
+     * description:找到倒数N个节点
+     */
+    public LNode getEndNumNode(LNode head, int num) {
+        LNode temp = head;
+        for (int i = 0; i < num; i++) {
+            temp = temp.next;
+        }
+        while (temp != null) {
+            temp = temp.next;
+            head = head.next;
+        }
+        return head;
+    }
+
+
+    /**
+     * date:2017/9/25
+     * description:删除倒数N个节点
+     * 注意，删除节点，就是n.next = n.next.next
+     */
+    public void delEndNumNode(LNode head, int num) {
+        LNode temp = head;
+        LNode delNode = head;
+        for (int i = 0; i < num; i++) {
+            temp = temp.next;
+        }
+        while (temp.next != null) {
+            temp = temp.next;
+            delNode = delNode.next;
+        }
+        delNode.next = delNode.next.next;
+    }
+
+
+    /**
+     * date:2017/9/25
+     * description:判断两个链表是否有交点
+     */
+    public boolean isMerge(LNode l1, LNode l2) {
+        int step1 = 0;
+        int step2 = 0;
+        LNode temp1 = l1;
+        LNode temp2 = l2;
+        while (temp1 != null) {
+            temp1 = temp1.next;
+            step1 = step1 + 1;
+        }
+        while (temp2 != null) {
+            temp2 = temp2.next;
+            step2 = step2 + 1;
+        }
+        //分别走step1和step2，就走到end
+        //那么如果有交点，一定是共有的某一个节点，到了end
+        int diff = step1 - step2;
+        for (int i = 0; i < diff; i++) {
+            l1 = l1.next;
+        }
+        while (l1 != null) {
+            if (l1 == l2) {
+                return true;
+            }
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        return false;
+    }
 }
 
 public class LinkChain {
@@ -157,9 +272,21 @@ public class LinkChain {
         LNode head = list.init();
         //LNode newHead = list.reverse(head);
         //list.printLink(newHead);
+
         //System.out.println(list.isBihe(head));
         //System.out.println(list.getLength(head));
-        LNode tail = list.getEndNode(head);
-        list.quickSort(head, tail);
+
+//        LNode tail = list.getEndNode(head);
+//        list.quickSort(head, tail);
+//        list.printLink(head);
+
+//        System.out.println(list.getEndNumNode(head, 1).val);
+
+//        list.delEndNumNode(head, 1);
+//        list.printLink(head);
+
+
+        LNode secondHead = list.initSecond();
+        System.out.println(list.isMerge(head, secondHead));
     }
 }
