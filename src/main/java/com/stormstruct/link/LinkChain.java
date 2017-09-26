@@ -129,6 +129,10 @@ class LinkList {
         //cur走一遍
         while (cur != end) {
             //后面的数，比standard小，要交换
+            //大的不用换，小的需要调到前面来，遇到一个小的，middle先往后移一位
+            // 3 5 6 1 2
+            // 3 1 2 5 6
+            // 2 1 3 5 6
             if (cur.val < standard) {
                 middle = middle.next;
 
