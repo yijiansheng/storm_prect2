@@ -1,8 +1,7 @@
-package com.stormkafka;
+package com.storm_kafka;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
-import org.apache.storm.topology.BoltDeclarer;
 import org.apache.storm.topology.TopologyBuilder;
 
 public class TKafkaTopo {

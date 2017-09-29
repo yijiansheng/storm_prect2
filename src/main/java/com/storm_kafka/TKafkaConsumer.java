@@ -1,6 +1,5 @@
-package com.stormkafka;
+package com.storm_kafka;
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.stormrefer;
+package com.storm_refer;
 
 import java.io.Serializable;
 

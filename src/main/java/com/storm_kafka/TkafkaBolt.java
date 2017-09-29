@@ -1,6 +1,5 @@
-package com.stormkafka;
+package com.storm_kafka;
 
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.storm.task.OutputCollector;

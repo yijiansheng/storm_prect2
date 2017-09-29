@@ -1,4 +1,4 @@
-package com.stormrefer;
+package com.storm_refer;
 
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;

@@ -1,8 +1,7 @@
-package com.stormrefer;
+package com.storm_refer;
 
 import com.alibaba.fastjson.JSON;
 
-import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Random;
 
