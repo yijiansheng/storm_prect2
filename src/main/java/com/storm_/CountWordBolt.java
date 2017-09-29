@@ -21,16 +21,27 @@ public class CountWordBolt
         this.countWords = new HashMap();
     }
 
+//    public CountWordBolt() {
+//        System.out.println("countbolt初始化");
+//    }
+
     public void execute(Tuple tuple) {
+        //    System.out.println("count 调用");
         String word = tuple.getStringByField("word");
+        //    System.out.println(word);
         int cnt = 1;
         if (this.countWords.containsKey(word)) {
-            cnt = ((Integer) this.countWords.get(word)).intValue() + 1;
+            cnt = (this.countWords.get(word)).intValue() + 1;
         }
         this.countWords.put(word, Integer.valueOf(cnt));
+        //     System.out.println(countWords);
         this.outputCollector.emit(new Values(new Object[]{word, Integer.valueOf(cnt)}));
     }
 
+    /**
+     * date:2017/9/29
+     * description:可以发map的
+     */
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
         outputFieldsDeclarer.declare(new Fields(new String[]{"word", "cnt"}));
     }

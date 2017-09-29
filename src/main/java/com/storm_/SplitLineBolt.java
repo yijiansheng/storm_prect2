@@ -18,17 +18,24 @@ public class SplitLineBolt extends BaseRichBolt {
     }
 
     public void execute(Tuple tuple) {
+//        System.out.println(Thread.currentThread().getName() + "split 调用");
         String line = tuple.getStringByField("line");
+        System.out.println(line);
         String[] words = line.split(" ");
         for (String word : words) {
             word = word.trim();
             if (!word.equals("")) {
+                //几个word就发几次
                 this.outputCollector.emit(new Values(new Object[]{word}));
             }
         }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
+        /**
+         * date:2017/9/29
+         * description:注意，发标识的时候，field里面是字符串数组
+         */
         outputFieldsDeclarer.declare(new Fields(new String[]{"word"}));
     }
 }

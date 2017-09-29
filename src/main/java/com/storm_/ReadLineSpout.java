@@ -16,7 +16,9 @@ public class ReadLineSpout
         extends BaseRichSpout {
     private SpoutOutputCollector collector;
     private Map conf;
-    private final String[] lines = {"long long ago I "};
+    private final String[] lines = {
+            "first second ok"
+    };
     private ArrayList<String> arrayList;
 
     public void open(Map map, TopologyContext topologyContext, SpoutOutputCollector spoutOutputCollector) {
@@ -38,8 +40,8 @@ public class ReadLineSpout
         int id = random.nextInt();
         id = id < 0 ? -id : id;
         id %= this.arrayList.size();
-
-        this.collector.emit(new Values(new Object[]{this.arrayList.get(id)}));
+        System.out.println("read_line_num : " + id);
+        this.collector.emit(new Values(new String[]{this.arrayList.get(id)}));
     }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
