@@ -41,10 +41,16 @@ public class ReadLineSpout
         id = id < 0 ? -id : id;
         id %= this.arrayList.size();
         System.out.println("read_line_num : " + id);
-        this.collector.emit(new Values(new String[]{this.arrayList.get(id)}));
+        //这个1 就是msgId
+        this.collector.emit(new Values(new String[]{this.arrayList.get(id)}), 1);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer outputFieldsDeclarer) {
         outputFieldsDeclarer.declare(new Fields(new String[]{"line"}));
+    }
+
+    @Override
+    public void ack(Object msgId) {
+        System.out.println("消息处理成功" + msgId);
     }
 }

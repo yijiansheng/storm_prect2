@@ -27,6 +27,8 @@ public class SplitLineBolt extends BaseRichBolt {
             if (!word.equals("")) {
                 //几个word就发几次
                 this.outputCollector.emit(new Values(new Object[]{word}));
+                //消息可靠性
+                this.outputCollector.ack(tuple);
             }
         }
     }

@@ -36,6 +36,8 @@ public class CountWordBolt
         this.countWords.put(word, Integer.valueOf(cnt));
         //     System.out.println(countWords);
         this.outputCollector.emit(new Values(new Object[]{word, Integer.valueOf(cnt)}));
+        //消息可靠性
+        this.outputCollector.ack(tuple);
     }
 
     /**
