@@ -18,6 +18,7 @@ public class RealTopo {
                 .setSpout("RealSpout", new RealSpout(), 1);
         builder.
                 setBolt("AnalysisBolt", new AnalysisBolt(), 1).shuffleGrouping("RealSpout");
+        //这里默认是两个对象
         builder.
                 setBolt("TimingBolt", new TimingBolt(), 2).shuffleGrouping("AnalysisBolt");
         Config config = new Config();
