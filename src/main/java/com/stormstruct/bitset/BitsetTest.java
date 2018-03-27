@@ -9,6 +9,7 @@ import java.util.BitSet;
  **/
 public class BitsetTest {
 
+
     /**
      * 求一个字符串包含的char
      */
